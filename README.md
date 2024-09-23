@@ -5,14 +5,14 @@ git checkout master
 git merge upstream/master  
 git push origin master  
 
-#Basic Features:
+##Basic Features:
 
 1. Check a balance
 2. Make a deposit
 3. Make a withdrawal
 4. Transfer
 
-#In txt file:
+##In txt file:
 
 1. Balance
 2. Name
