@@ -1,9 +1,9 @@
-public class Acount {
+public class Account {
     private int Id;
     private String Name;
     private int Balance;
 
-    public Acount(int Id, String Name, int InitialBalance) {
+    public Account(int Id, String Name, int InitialBalance) {
         this.Id = Id;
         this.Name = Name;
         this.Balance = InitialBalance;
@@ -22,7 +22,6 @@ public class Acount {
         System.out.println("Account Name: " + this.Name);
         System.out.println("Account Balance: " + this.Balance);
     }
-    
 
 
 }
