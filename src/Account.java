@@ -1,12 +1,24 @@
 public class Account {
-    public int Id;
+    private int Id;
     private String Name;
-    public int Balance;
+    private int Balance;
 
     public Account(int Id, String Name, int InitialBalance) {
         this.Id = Id;
         this.Name = Name;
         this.Balance = InitialBalance;
+    }
+    public int getId() {
+        return Id;
+    }
+    public String getName() {
+        return Name;
+    }
+    public int getBalance(){
+        return Balance;
+    }
+    public void setBalance(int balance){
+        this.Balance = balance;
     }
 
     public void deposit(int amount) {
@@ -15,12 +27,6 @@ public class Account {
 
     public void withdraw(int amount) {
         this.Balance -= amount;
-    }
-
-    public void checkBalance() {
-        System.out.println("Account ID: " + this.Id);
-        System.out.println("Account Name: " + this.Name);
-        System.out.println("Account Balance: " + this.Balance);
     }
 
 }

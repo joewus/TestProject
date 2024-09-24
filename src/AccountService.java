@@ -1,19 +1,14 @@
 import java.util.Scanner; // Import the Scanner class
 
-public class AccountService {
+public class AccountService extends Account{
 
     // Creating an instance of the Scanner class
     private Scanner scanner = new Scanner(System.in);
 
-    // Getter functions
-
-    public int getBalance(Account account) {
-        return account.Balance;
+    public AccountService(Account account) {
+        super(account.getId(), account.getName(), account.getBalance());
     }
 
-    public int getId(Account account) {
-        return account.Id;
-    }
 
     // Deposits the specified amount into the given account
 
@@ -25,7 +20,7 @@ public class AccountService {
 
         // Ensuring the user enters a valid deposit amount
         if (amount > 0) {
-            account.deposit(amount);
+            account.setBalance(account.getBalance() + amount);
             System.out.println("Deposited: " + amount);
         } else {
             System.out.println("Deposit amount must be positive.");
@@ -55,14 +50,14 @@ public class AccountService {
         // Taking transfer amount from the user
         int amount = scanner.nextInt();
 
-        if (amount > 0 && amount <= getBalance(fromAccount)) {
-            fromAccount.withdraw(amount);
-            toAccount.deposit(amount);
-
-            System.out.println("Transferred: " + amount + " to Account ID: " + getId(toAccount));
-        } else {
-            System.out.println("Invalid transfer amount.");
-        }
+//        if (amount > 0 && amount <= getBalance(fromAccount)) {
+//            fromAccount.withdraw(amount);
+//            toAccount.deposit(amount);
+//
+//            System.out.println("Transferred: " + amount + " to Account ID: " + getId(toAccount));
+//        } else {
+//            System.out.println("Invalid transfer amount.");
+//        }
 
     }
 
