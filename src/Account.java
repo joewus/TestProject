@@ -8,16 +8,28 @@ public class Account {
         this.Name = Name;
         this.Balance = InitialBalance;
     }
+
     public int getId() {
         return Id;
     }
+
+    public int getId(Account account) {
+        return this.Id;
+    }
+
     public String getName() {
         return Name;
     }
-    public int getBalance(){
+
+    public int getBalance() {
         return Balance;
     }
-    public void setBalance(int balance){
+
+    public int getBalance(Account account) {
+        return this.Balance;
+    }
+
+    public void setBalance(int balance) {
         this.Balance = balance;
     }
 
