@@ -1,7 +1,7 @@
 public class Account {
-    private int Id;
+    public int Id;
     private String Name;
-    private int Balance;
+    public int Balance;
 
     public Account(int Id, String Name, int InitialBalance) {
         this.Id = Id;
@@ -22,8 +22,5 @@ public class Account {
         System.out.println("Account Name: " + this.Name);
         System.out.println("Account Balance: " + this.Balance);
     }
-
-
-
 
 }

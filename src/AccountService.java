@@ -1,14 +1,25 @@
 import java.util.Scanner; // Import the Scanner class
 
 public class AccountService {
+
     // Creating an instance of the Scanner class
     private Scanner scanner = new Scanner(System.in);
 
-    /*
-      Deposits the specified amount into the given account.
-     */
+    // Getter functions
+
+    public int getBalance(Account account) {
+        return account.Balance;
+    }
+
+    public int getId(Account account) {
+        return account.Id;
+    }
+
+    // Deposits the specified amount into the given account
+
     public void deposit(Account account) {
         System.out.print("Enter amount to deposit: ");
+
         // Taking deposit amount from the user
         int amount = scanner.nextInt();
 
@@ -21,12 +32,13 @@ public class AccountService {
         }
     }
 
-    /*
-     Withdraws the specified amount from the given account.
-     */
+    // Withdraws the specified amount from the given account.
+
     public void withdraw(Account account) {
         System.out.print("Enter amount to withdraw: ");
-        int amount = scanner.nextInt(); // Taking withdrawal amount from the user
+
+        // Taking withdrawal amount from the user
+        int amount = scanner.nextInt();
 
         // Ensuring the user enters a valid withdrawal amount
         if (amount > 0) {
@@ -37,42 +49,25 @@ public class AccountService {
         }
     }
 
-    /*
-     * @param fromAccount The account to transfer money from.
-     * @param toAccount   The account to transfer money to.
-     */
     public void transfer(Account fromAccount, Account toAccount) {
         System.out.print("Enter amount to transfer: ");
+
         // Taking transfer amount from the user
         int amount = scanner.nextInt();
 
-        /*Checking if the user has enough balance for the transfer but i can not
-        implment it since we need a get balance in the class Account before
-         */
-        /*
-        if (amount > 0 && amount <= fromAccount.getBalance()) {
+        if (amount > 0 && amount <= getBalance(fromAccount)) {
             fromAccount.withdraw(amount);
             toAccount.deposit(amount);
-            System.out.println("Transferred: " + amount + " to Account ID: " + toAccount.getId());
+
+            System.out.println("Transferred: " + amount + " to Account ID: " + getId(toAccount));
         } else {
             System.out.println("Invalid transfer amount.");
         }
 
-         */
     }
 
-    /**
-     * Checks the balance of the given account.
+    //  Closes the scanner to prevent resource leaks.
 
-     * @param account The account whose balance is to be checked.
-     */
-    public void checkBalance(Account account) {
-        account.checkBalance();
-    }
-
-    /*
-      Closes the scanner to prevent resource leaks.
-     */
     public void closeScanner() {
         scanner.close();
     }
