@@ -3,6 +3,10 @@ public class Account {
     private String Name;
     private int Balance;
 
+    public Account() {
+
+    }
+
     public Account(int Id, String Name, int InitialBalance) {
         this.Id = Id;
         this.Name = Name;
@@ -11,10 +15,6 @@ public class Account {
 
     public int getId() {
         return Id;
-    }
-
-    public int getId(Account account) {
-        return this.Id;
     }
 
     public String getName() {
@@ -33,12 +33,5 @@ public class Account {
         this.Balance = balance;
     }
 
-    public void deposit(int amount) {
-        this.Balance += amount;
-    }
-
-    public void withdraw(int amount) {
-        this.Balance -= amount;
-    }
 
 }
