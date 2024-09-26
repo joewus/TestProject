@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -31,33 +32,41 @@ public class AccountService extends Account {
         Account depositAccount = accountMap.get(accountId);
         System.out.print("Enter amount to deposit: ");
 
-        // Taking deposit amount from the user
-        int amount = scanner.nextInt();
+        try {
+            // Taking deposit amount from the user
+            int amount = scanner.nextInt();
+            // Ensuring the user enters a valid deposit amount
 
-        // Ensuring the user enters a valid deposit amount
-        if (amount > 0) {
-            depositAccount.setBalance(depositAccount.getBalance() + amount);
-            System.out.println("Deposited: " + amount);
-        } else {
-            System.out.println("Deposit amount must be positive.");
+            if (amount > 0) {
+                depositAccount.setBalance(depositAccount.getBalance() + amount);
+                System.out.println("Deposited: " + amount);
+            } else {
+                System.out.println("Invalid amount, please try again");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a valid amount.");
+            scanner.next(); // Clear the invalid input
         }
-
     }
 
     // Withdraws the specified amount from the given account.
     public void withdraw(int accountId) {
         Account depositAccount = accountMap.get(accountId);
         System.out.print("Enter amount to withdraw: ");
-
         // Taking withdrawal amount from the user
-        int amount = scanner.nextInt();
+        try {
+            int amount = scanner.nextInt();
 
-        // Ensuring the user enters a valid withdrawal amount
-        if (amount <= depositAccount.getBalance()) {
-            depositAccount.setBalance(depositAccount.getBalance() - amount);
-            System.out.println("Withdrew: " + amount);
-        } else {
-            System.out.println("Invalid withdraw amount.");
+            // Ensuring the user enters a valid withdrawal amount
+            if (amount <= depositAccount.getBalance()) {
+                depositAccount.setBalance(depositAccount.getBalance() - amount);
+                System.out.println("Withdrew: " + amount);
+            } else {
+                System.out.println("Invalid withdraw amount.");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a valid amount.");
+            scanner.next(); // Clear the invalid input
         }
     }
 
@@ -69,23 +78,27 @@ public class AccountService extends Account {
         System.out.print("Enter amount to transfer: ");
 
         // Taking transfer amount from the user
-        int amount = scanner.nextInt();
+        try {
+            int amount = scanner.nextInt();  // Taking input for the transfer amount
 
-        if (amount > 0 && amount <= fromAccount.getBalance()) {
-            fromAccount.setBalance(fromAccount.getBalance() - amount);
-            toAccount.setBalance(toAccount.getBalance() + amount);
+            // Checking if the amount is valid and if the balance is sufficient
+            if (amount > 0 && amount <= fromAccount.getBalance()) {
+                fromAccount.setBalance(fromAccount.getBalance() - amount);  // Deduct from the source account
+                toAccount.setBalance(toAccount.getBalance() + amount);      // Add to the target account
 
-            System.out.println("Transferred from Id " + fromAccountId + ", amount: " + amount + " to Id " + toAccountId);
-        } else {
-            System.out.println("Your transfer amount is invalid due to insufficient funds.");
+                // Displaying success message with account details
+                System.out.println("Transferred from Id " + fromAccount.getId() + ", amount: " + amount + " to Id " + toAccount.getId());
+            } else {
+                System.out.println("Your transfer amount is invalid due to insufficient funds.");
+            }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input. Please enter a valid number.");  // Handling invalid input
+            scanner.next(); // Clearing the scanner buffer for future input
         }
-
     }
 
     //  Closes the scanner to prevent resource leaks.
     public void closeScanner() {
         scanner.close();
     }
-
-
 }
