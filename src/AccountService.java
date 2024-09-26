@@ -75,9 +75,9 @@ public class AccountService extends Account {
             fromAccount.setBalance(fromAccount.getBalance() - amount);
             toAccount.setBalance(toAccount.getBalance() + amount);
 
-            System.out.println("Transferred from: " + fromAccountId + " amount: " + amount + " to Account ID: " + toAccountId);
+            System.out.println("Transferred from Id " + fromAccountId + ", amount: " + amount + " to Id " + toAccountId);
         } else {
-            System.out.println("Invalid transfer amount.");
+            System.out.println("Your transfer amount is invalid due to insufficient funds.");
         }
 
     }
