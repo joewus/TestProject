@@ -1,54 +1,91 @@
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class AccountService extends Account {
-    private Scanner scanner = new Scanner(System.in);
 
-    // Constructor for AccountService class
     public AccountService() {
-        super(); // Calls the parent class (Account) constructor
+        super();
     }
 
-    // Deposits the specified amount into this account
-    public void deposit(Account account){
+    // Creating an instance of the Scanner class
+    private Scanner scanner = new Scanner(System.in);
+
+    // Map to store accounts with their IDs as keys
+    private Map<Integer, Account> accountMap = new HashMap<>();
+
+    // Method to add an account to the map
+    public void addAccount(Account account) {
+        accountMap.put(account.getId(), account);
+    }
+
+    // Shows the balance in the given account
+    public void balance(int accountId) {
+        Account depositAccount = accountMap.get(accountId);
+
+        System.out.println("Balance is: " + depositAccount.getBalance());
+    }
+
+    // Deposits the specified amount into the given account
+    public void deposit(int accountId) {
+        Account depositAccount = accountMap.get(accountId);
         System.out.print("Enter amount to deposit: ");
+
+        // Taking deposit amount from the user
         int amount = scanner.nextInt();
 
+        // Ensuring the user enters a valid deposit amount
         if (amount > 0) {
-            setBalance(account.getBalance() + amount); // Update balance using setBalance
+            depositAccount.setBalance(depositAccount.getBalance() + amount);
             System.out.println("Deposited: " + amount);
         } else {
             System.out.println("Deposit amount must be positive.");
         }
+
     }
 
-    // Withdraws the specified amount from this account
-    public void withdraw(Account account) {
+    // Withdraws the specified amount from the given account.
+    public void withdraw(int accountId) {
+        Account depositAccount = accountMap.get(accountId);
         System.out.print("Enter amount to withdraw: ");
+
+        // Taking withdrawal amount from the user
         int amount = scanner.nextInt();
 
-        if (amount > 0 && amount <= getBalance()) {
-            setBalance(account.getBalance() - amount); // Update balance using setBalance
+        // Ensuring the user enters a valid withdrawal amount
+        if (amount <= depositAccount.getBalance()) {
+            depositAccount.setBalance(depositAccount.getBalance() - amount);
             System.out.println("Withdrew: " + amount);
         } else {
-            System.out.println("Insufficient funds for withdrawal.");
+            System.out.println("Invalid withdraw amount.");
         }
     }
 
-    // Transfers the specified amount from one account to another
-    public void transfer(Account fromAccount, Account toAccount) {
+    public void transfer(int fromAccountId, int toAccountId) {
+        // Retrieve accounts using the IDs
+        Account fromAccount = accountMap.get(fromAccountId);
+        Account toAccount = accountMap.get(toAccountId);
+
         System.out.print("Enter amount to transfer: ");
+
+        // Taking transfer amount from the user
         int amount = scanner.nextInt();
 
         if (amount > 0 && amount <= fromAccount.getBalance()) {
-            fromAccount.setBalance(fromAccount.getBalance() - amount); // Deduct from current account
-            toAccount.setBalance(toAccount.getBalance() + amount); // Add to the recipient account
-            System.out.println("Transferred: " + amount + " to Account ID: " + toAccount.getId());
+            fromAccount.setBalance(fromAccount.getBalance() - amount);
+            toAccount.setBalance(toAccount.getBalance() + amount);
+
+            System.out.println("Transferred from: " + fromAccountId + " amount: " + amount + " to Account ID: " + toAccountId);
         } else {
             System.out.println("Invalid transfer amount.");
         }
+
     }
 
+    //  Closes the scanner to prevent resource leaks.
     public void closeScanner() {
         scanner.close();
     }
+
+
 }

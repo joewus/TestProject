@@ -1,5 +1,5 @@
 public class Account {
-    private int Id;
+    public int Id;
     private String Name;
     private int Balance;
 
@@ -17,21 +17,16 @@ public class Account {
         return Id;
     }
 
-    public String getName() {
-        return Name;
-    }
+//    public String getName() {
+//        return Name;
+//    }
 
     public int getBalance() {
         return Balance;
     }
 
-    public int getBalance(Account account) {
-        return this.Balance;
-    }
-
     public void setBalance(int balance) {
         this.Balance = balance;
     }
-
 
 }

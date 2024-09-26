@@ -1,21 +1,24 @@
 public class Main {
     public static void main(String[] args) {
-        // Create two accounts
-        Account account1 = new Account(123, "Chang", 100);
-        Account account2 = new Account(456, "Luiz", 50);
+        AccountService accountService = new AccountService();
 
-        // Create AccountService for account1 (AccountService extends Account)
-        AccountService accountService1 = new AccountService();
-
-
-        // Transfer between account1 and account2 using the transfer method
-        accountService1.transfer(account1, account2); // Pass both accounts for the transfer
+        Account account1 = new Account(100, "Luiz", 15);
+        accountService.addAccount(account1);
+        Account account2 = new Account(202, "Chang", 1000);
+        accountService.addAccount(account2);
 
         System.out.println(account1.getBalance());
         System.out.println(account2.getBalance());
-        accountService1.withdraw(account1);
-        System.out.println(accountService1.getBalance(account2));
-        // Close the scanner
-        accountService1.closeScanner();
+
+        accountService.balance(100);
+        accountService.deposit(100);
+        accountService.withdraw(100);
+        accountService.transfer(100, 202);
+
+        System.out.println(account1.getBalance());
+        System.out.println(account2.getBalance());
+
+        accountService.closeScanner();
+
     }
 }
