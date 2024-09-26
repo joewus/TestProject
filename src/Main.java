@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -13,11 +14,14 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Scanner stringScanner = new Scanner(System.in);
         String abortChoice;
-
+        int userId = 0;
         System.out.print("Please enter user ID: ");
-
-        int userId = scanner.nextShort();
-
+        try {
+            userId = scanner.nextShort();
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid Id");
+            scanner.next();
+        }
         do {
             System.out.print("Please choose the operation you would like to perform: \n 1. Check balance \n 2. Deposit \n 3. Withdrawal \n 4. Transfer \n");
             System.out.print("Your choice: ");
@@ -36,9 +40,13 @@ public class Main {
                     break;
                 case 4:
                     System.out.print("Please enter the ID you wish to transfer to: ");
-                    int transferId = scanner.nextInt();
-
-                    accountService.transfer(userId, transferId);
+                    try {
+                        int transferId = scanner.nextInt();
+                        accountService.transfer(userId, transferId);
+                    } catch (InputMismatchException e) {
+                        System.out.println("Invalid Id");
+                        ;
+                    }
 
                     break;
                 default:
