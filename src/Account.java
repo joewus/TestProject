@@ -1,5 +1,5 @@
 public class Account {
-    public int Id;
+    private int Id;
     private String Name;
     private int Balance;
 
@@ -17,9 +17,9 @@ public class Account {
         return Id;
     }
 
-//    public String getName() {
-//        return Name;
-//    }
+    public String getName() {
+        return Name;
+    }
 
     public int getBalance() {
         return Balance;

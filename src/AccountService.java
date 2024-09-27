@@ -11,7 +11,7 @@ public class AccountService extends Account {
     ExceptionHandler exceptionHandler = new ExceptionHandler();
 
     // Creating an instance of the Scanner class
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     // Map to store accounts with their IDs as keys
     public Map<Integer, Account> accountMap = new HashMap<>();
@@ -40,12 +40,18 @@ public class AccountService extends Account {
         }
 
         int amount = exceptionHandler.getValidAmount("Enter amount to deposit: ");
-        if (amount > 0) {
+
+        // If amount is -1, it means invalid input was provided, so we skip further processing
+        if (amount == -1) {
+            return;  // Skip the rest of the method
+        }
+
+        if (amount <= 0) {
+            System.out.println("Cannot deposit a negative or zero amount.");
+        } else {
             account.setBalance(account.getBalance() + amount);
             System.out.println("Deposited: " + amount);
-
-          }
-
+        }
     }
 
     // Withdraws the specified amount from the given account
@@ -57,11 +63,19 @@ public class AccountService extends Account {
         }
 
         int amount = exceptionHandler.getValidAmount("Enter amount to withdraw: ");
-        if (amount > 0 && amount <= account.getBalance()) {
+
+        // If amount is -1, it means invalid input was provided, so we skip further processing
+        if (amount == -1) {
+            return;  // Skip the rest of the method
+        }
+
+        if (amount <= 0) {
+            System.out.println("Cannot withdraw a negative or zero amount.");
+        } else if (amount > account.getBalance()) {
+            System.out.println("Insufficient balance.");
+        } else {
             account.setBalance(account.getBalance() - amount);
             System.out.println("Withdrew: " + amount);
-        } else {
-            System.out.println("Invalid withdraw amount.");
         }
     }
 
@@ -76,20 +90,31 @@ public class AccountService extends Account {
             return; // Exit the method if accounts are not valid
         }
 
+        // Get the amount to transfer
         int amount = exceptionHandler.getValidAmount("Enter amount to transfer: ");
-        if (amount > 0 && amount <= fromAccount.getBalance()) {
+
+        // If the amount is -1, it means invalid input was entered
+        if (amount == -1) {
+            return;  // Skip further processing if input was invalid
+        }
+
+        // Handle insufficient funds or invalid transfer amount
+        if (amount <= 0) {
+            System.out.println("Transfer amount must be positive.");
+        } else if (amount > fromAccount.getBalance()) {
+            System.out.println("Insufficient funds for the transfer.");
+        } else {
+            // Perform the transfer
             fromAccount.setBalance(fromAccount.getBalance() - amount); // Withdraw from source account
             toAccount.setBalance(toAccount.getBalance() + amount);     // Deposit to target account
-            System.out.println("Transferred from Id " + fromAccount.getId() + ", amount: " + amount + " to Id " + toAccount.getId());
-        } else {
-            System.out.println("Your transfer amount is invalid due to insufficient funds.");
+            System.out.println("Transferred from Id " + fromAccount.getId() + ", amount: " + amount + " to "
+                    + toAccount.getName() + "(Id " + toAccount.getId() + ")");
+
         }
     }
 
     // Closes the scanner to prevent resource leaks
     public void closeScanner() {
-        if (scanner != null) {
-            scanner.close(); // Close the scanner safely
-        }
+        scanner.close(); // Close the scanner safely
     }
 }
