@@ -14,7 +14,7 @@ public class AccountService extends Account {
     private Scanner scanner = new Scanner(System.in);
 
     // Map to store accounts with their IDs as keys
-    private Map<Integer, Account> accountMap = new HashMap<>();
+    public Map<Integer, Account> accountMap = new HashMap<>();
 
     // Method to add an account to the map
     public void addAccount(Account account) {
@@ -43,9 +43,9 @@ public class AccountService extends Account {
         if (amount > 0) {
             account.setBalance(account.getBalance() + amount);
             System.out.println("Deposited: " + amount);
-        } else {
-            System.out.println("Invalid amount, please try again.");
-        }
+
+          }
+
     }
 
     // Withdraws the specified amount from the given account

@@ -1,5 +1,4 @@
 import java.util.InputMismatchException;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -17,45 +16,56 @@ public class Main {
         int userId = 0;
         System.out.print("Please enter user ID: ");
         try {
-            userId = scanner.nextShort();
+            if (accountService.accountMap.get(userId = scanner.nextShort()) == null) {
+
+            } else {
+
+
+                do {
+
+                    System.out.print("Please choose the operation you would like to perform: \n 1. Check balance \n 2. Deposit \n 3. Withdrawal \n 4. Transfer \n");
+                    System.out.print("Your choice: ");
+
+                    try {
+                        int userChoice = scanner.nextInt();
+
+                        switch (userChoice) {
+                            case 1:
+                                accountService.balance(userId);
+                                break;
+                            case 2:
+                                accountService.deposit(userId);
+                                break;
+                            case 3:
+                                accountService.withdraw(userId);
+                                break;
+                            case 4:
+                                System.out.print("Please enter the ID you wish to transfer to: ");
+                                try {
+                                    int transferId = scanner.nextInt();
+                                    accountService.transfer(userId, transferId);
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Invalid Id");
+                                }
+                                break;
+                            default:
+                                System.out.print("Invalid choice, try again.");
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println("Invalid choice. Please enter a number.");
+                        scanner.next();  // Clear the scanner after invalid input
+                    }
+                    System.out.print("Do you wish to continue: y | n: ");
+                    abortChoice = stringScanner.nextLine();
+                    System.out.println();
+
+                } while (abortChoice.equalsIgnoreCase("y"));
+            }
+
         } catch (InputMismatchException e) {
             System.out.println("Invalid Id");
             scanner.next();
         }
-        do {
-            System.out.print("Please choose the operation you would like to perform: \n 1. Check balance \n 2. Deposit \n 3. Withdrawal \n 4. Transfer \n");
-            System.out.print("Your choice: ");
-
-            int userChoice = scanner.nextInt();
-
-            switch (userChoice) {
-                case 1:
-                    accountService.balance(userId);
-                    break;
-                case 2:
-                    accountService.deposit(userId);
-                    break;
-                case 3:
-                    accountService.withdraw(userId);
-                    break;
-                case 4:
-                    System.out.print("Please enter the ID you wish to transfer to: ");
-                    try {
-                        int transferId = scanner.nextInt();
-                        accountService.transfer(userId, transferId);
-                    } catch (InputMismatchException e) {
-                        System.out.println("Invalid Id");
-                    }
-
-                    break;
-                default:
-                    System.out.print("Invalid choice, try again.");
-            }
-            System.out.print("Do you wish to continue: y | n: ");
-            abortChoice = stringScanner.nextLine();
-            System.out.println();
-
-        } while (Objects.equals(abortChoice, "y"));
 
         accountService.closeScanner();
         scanner.close();

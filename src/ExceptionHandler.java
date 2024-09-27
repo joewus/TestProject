@@ -13,7 +13,7 @@ public class ExceptionHandler {
             if (amount <= 0) {
                 System.out.println("Amount must be positive."); // Inform the user if the amount is not positive
             } else {
-                return amount; // Return the valid amount
+                  return amount; // Return the valid amount
             }
         } catch (InputMismatchException e) {
             System.out.println("Invalid input. Please enter a valid number."); // Handle invalid input
