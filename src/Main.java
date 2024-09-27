@@ -22,13 +22,16 @@ public class Main {
             System.out.println("Invalid Id");
             scanner.next();
         }
+
         do {
+
             System.out.print("Please choose the operation you would like to perform: \n 1. Check balance \n 2. Deposit \n 3. Withdrawal \n 4. Transfer \n");
             System.out.print("Your choice: ");
 
-            int userChoice = scanner.nextInt();
+            try{
+                int   userChoice = scanner.nextInt();
 
-            switch (userChoice) {
+                switch (userChoice) {
                 case 1:
                     accountService.balance(userId);
                     break;
@@ -45,18 +48,21 @@ public class Main {
                         accountService.transfer(userId, transferId);
                     } catch (InputMismatchException e) {
                         System.out.println("Invalid Id");
-                        ;
                     }
 
                     break;
                 default:
                     System.out.print("Invalid choice, try again.");
-            }
+                }
+            }catch (InputMismatchException e) {
+                System.out.println("Invalid choice. Please enter a number.");
+                scanner.next();  // Clear the scanner after invalid input
+                }
             System.out.print("Do you wish to continue: y | n: ");
             abortChoice = stringScanner.nextLine();
             System.out.println();
 
-        } while (Objects.equals(abortChoice, "y"));
+        } while (abortChoice.equalsIgnoreCase("y"));
 
         accountService.closeScanner();
         scanner.close();
