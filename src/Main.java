@@ -45,7 +45,6 @@ public class Main {
                         accountService.transfer(userId, transferId);
                     } catch (InputMismatchException e) {
                         System.out.println("Invalid Id");
-                        ;
                     }
 
                     break;
