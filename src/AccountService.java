@@ -2,12 +2,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class AccountService extends Account {
-
-    public AccountService() {
-        super();
-    }
-
+public class AccountService {
     ExceptionHandler exceptionHandler = new ExceptionHandler();
 
     // Creating an instance of the Scanner class
@@ -81,6 +76,7 @@ public class AccountService extends Account {
 
     // Transfers amount from one account to another
     public void transfer(int fromAccountId, int toAccountId) {
+
         Account fromAccount = accountMap.get(fromAccountId);
         Account toAccount = accountMap.get(toAccountId);
 
