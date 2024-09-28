@@ -65,7 +65,7 @@ public class Main {
                                 } catch (InputMismatchException e) {
                                     System.out.println("Invalid Id");
                                     scanner.nextLine();  // Clear the invalid input from the buffer
-                                    // Very importnt, pay attention to this issue!
+                                    // Very important, pay attention to this issue!
                                     // You can comment the scanner.nextLine(); line and try to type "y"
                                     // instead of transfer id to see what happens next.
                                 }
