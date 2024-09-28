@@ -28,13 +28,13 @@ public class Main {
 
                 do {
                     System.out.print("""
-                            Please choose the operation you would like to perform:\s
-                             1. Check balance\s
-                             2. Deposit\s
-                             3. Withdrawal\s
-                             4. Transfer\s
-                             5. Exit\s
-                            """);
+                        Please choose the operation you would like to perform:\s
+                         1. Check balance\s
+                         2. Deposit\s
+                         3. Withdrawal\s
+                         4. Transfer\s
+                         5. Exit\s
+                        """);
                     System.out.print("Your choice: ");
 
                     try {

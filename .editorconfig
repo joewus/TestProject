@@ -1,0 +1,19 @@
+# Root marker (important for this to work globally for the project)
+root = true
+
+# Global settings for all files
+[*]
+charset = utf-8 # Encoding to UTF-8
+end_of_line = lf # Line endings (LF for Linux/macOS or CRLF for Windows)
+insert_final_newline = true # Ensure a newline at the end of the file
+trim_trailing_whitespace = true # Remove trailing whitespaces on save
+
+# Java specific settings
+[*.java]
+indent_style = space # Use spaces instead of tabs
+indent_size = 4 # Indent size for Java (4 spaces)
+max_line_length = 120 # Set a maximum line length (optional)
+
+[{*.bash,*.sh,*.zsh}]
+indent_size = 2
+tab_width = 2

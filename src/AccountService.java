@@ -104,7 +104,7 @@ public class AccountService {
             fromAccount.setBalance(fromAccount.getBalance() - amount); // Withdraw from source account
             toAccount.setBalance(toAccount.getBalance() + amount);     // Deposit to target account
             System.out.println("Transferred from Id " + fromAccount.getId() + ", amount: " + amount + " to "
-                    + toAccount.getName() + "(Id " + toAccount.getId() + ")");
+                + toAccount.getName() + "(Id " + toAccount.getId() + ")");
 
         }
     }
