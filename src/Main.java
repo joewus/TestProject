@@ -4,95 +4,108 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         AccountService accountService = new AccountService();
-
-        Account account1 = new Account(100, "Luiz", 15);
-        accountService.addAccount(account1);
-        Account account2 = new Account(202, "Chang", 1000);
-        accountService.addAccount(account2);
-
         Scanner scanner = new Scanner(System.in);
-        String abortChoice;
+        FileHandler fileHandler = new FileHandler(); // Create FileHandler object
 
-        int userId;
-        System.out.print("Please enter user ID: ");
+        boolean validIdEntered = false;  // Flag to track if a valid ID is entered
+        int userId = -1;  // Initialize userId to an invalid value
 
-        try {
-            userId = scanner.nextShort();
+        // Loop to keep asking for user ID until a valid one is entered or user decides to exit
+        while (!validIdEntered) {
+            try {
+                System.out.print("Please enter user ID: ");
+                userId = scanner.nextInt();
 
-            // Consume the leftover newline after nextInt()
-            scanner.nextLine();
+                // Search for the account by userId in the file
+                Account account = fileHandler.findAccountById(userId);
 
-            if (accountService.accountMap.get(userId) == null) {
-                System.out.println("Invalid Id");
-            } else {
-
-                do {
-                    System.out.print("""
-                        Please choose the operation you would like to perform:\s
-                         1. Check balance\s
-                         2. Deposit\s
-                         3. Withdrawal\s
-                         4. Transfer\s
-                         5. Exit\s
-                        """);
-                    System.out.print("Your choice: ");
-
-                    try {
-                        int userChoice = scanner.nextInt();
-
-                        // Consume the leftover newline after nextInt()
-                        scanner.nextLine();
-
-                        switch (userChoice) {
-                            case 1:
-                                accountService.balance(userId);
-                                break;
-                            case 2:
-                                accountService.deposit(userId);
-                                break;
-                            case 3:
-                                accountService.withdraw(userId);
-                                break;
-                            case 4:
-                                System.out.print("Please enter the ID you wish to transfer to: ");
-                                try {
-                                    int transferId = scanner.nextInt();
-
-                                    // Consume the leftover newline after nextInt()
-                                    scanner.nextLine();
-
-                                    accountService.transfer(userId, transferId);
-                                } catch (InputMismatchException e) {
-                                    System.out.println("Invalid Id");
-                                    scanner.nextLine();  // Clear the invalid input from the buffer
-                                    // Very important, pay attention to this issue!
-                                    // You can comment the scanner.nextLine(); line and try to type "y"
-                                    // instead of transfer id to see what happens next.
-                                }
-                                break;
-                            case 5:
-                                return;
-                            default:
-                                System.out.print("Invalid choice, try again.");
-                        }
-                    } catch (InputMismatchException e) {
-                        System.out.println("Invalid choice. Please enter a number.");
-                        scanner.nextLine();  // Clear the scanner after invalid input
-                        //Here we need to use nextLine instead of next! Very important!
+                if (account != null) {
+                    // If the account is found, add it to accountService
+                    accountService.addAccount(account);
+                    validIdEntered = true; // Exit the loop once a valid account is found
+                } else {
+                    // If the account is not found
+                    System.out.println("Account with this ID not found.");
+                    // Ask user if they want to continue or exit
+                    if (askUserToContinue(scanner)) {
+                        return;  // Exit the program if the user does not want to continue
                     }
-                    System.out.print("Do you wish to continue: y | n: ");
-                    abortChoice = scanner.nextLine();
-                    System.out.println();
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid ID input. Please enter a valid numeric ID.");
+                scanner.nextLine(); // Clear the invalid input from the scanner buffer
 
-                } while (abortChoice.equalsIgnoreCase("y"));
+                // Ask the user if they want to continue or exit
+                if (askUserToContinue(scanner)) {
+                    return;  // Exit the program if the user does not want to continue
+                }
+            }
+        }
+
+        // Once a valid ID is entered, allow user to choose operations
+        boolean continueOperations = true;
+        while (continueOperations) {
+            System.out.print("""
+                Please choose the operation you would like to perform:\s
+                 1. Check balance\s
+                 2. Deposit\s
+                 3. Withdrawal\s
+                 4. Transfer\s
+                 5. Exit\s
+                """);
+            System.out.print("Your choice: ");
+
+            try {
+                int userChoice = scanner.nextInt();
+
+                // Consume the leftover newline after nextInt()
+                scanner.nextLine();
+
+                switch (userChoice) {
+                    case 1 -> accountService.balance(userId);
+                    case 2 -> accountService.deposit(userId);
+                    case 3 -> accountService.withdraw(userId);
+                    case 4 -> {
+                        System.out.print("Please enter the ID you wish to transfer to: ");
+                        try {
+                            int transferId = scanner.nextInt();
+
+                            // Consume the leftover newline after nextInt()
+                            scanner.nextLine();
+
+                            // Pass FileHandler to the transfer method to load accounts if necessary
+                            accountService.transfer(userId, transferId, fileHandler);
+                        } catch (InputMismatchException e) {
+                            System.out.println("Invalid transfer ID.");
+                            scanner.nextLine();  // Clear the invalid input from the buffer
+                        }
+                    }
+                    case 5 -> {
+                        return;  // Exit the program if the user chooses to exit
+                    }
+
+                    default -> System.out.println("Invalid choice, try again.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid choice. Please enter a number.");
+                scanner.nextLine();  // Clear the scanner after invalid input
             }
 
-        } catch (InputMismatchException e) {
-            System.out.println("Invalid Id");
-            scanner.next();
+            // Ask if the user wants to continue with operations unless they chose to exit
+            if (askUserToContinue(scanner)) {
+                continueOperations = false; // Reuse method to ask user if they wish to continue
+            }
         }
 
         scanner.close();
         accountService.closeScanner();
+    }
+
+    // Helper method to ask the user if they want to continue or exit
+    private static boolean askUserToContinue(Scanner scanner) {
+        System.out.print("Do you wish to continue (y | n): ");
+        String choice = scanner.next();
+        scanner.nextLine(); // Consume the leftover newline
+        return !choice.equalsIgnoreCase("y");
     }
 }

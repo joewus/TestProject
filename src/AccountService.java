@@ -38,11 +38,12 @@ public class AccountService {
 
         // If amount is -1, it means invalid input was provided, so we skip further processing
         if (amount == -1) {
+            System.out.println("Invalid input detected. Deposit cancelled.");
             return;  // Skip the rest of the method
         }
 
         if (amount <= 0) {
-            System.out.println("Cannot deposit a negative or zero amount.");
+            System.out.println("Invalid input detected. Deposit cancelled.");
         } else {
             account.setBalance(account.getBalance() + amount);
             System.out.println("Deposited: " + amount);
@@ -61,11 +62,12 @@ public class AccountService {
 
         // If amount is -1, it means invalid input was provided, so we skip further processing
         if (amount == -1) {
+            System.out.println("Invalid input detected. Withdraw cancelled.");
             return;  // Skip the rest of the method
         }
 
         if (amount <= 0) {
-            System.out.println("Cannot withdraw a negative or zero amount.");
+            System.out.println("Invalid input detected. Withdraw cancelled.");
         } else if (amount > account.getBalance()) {
             System.out.println("Insufficient balance.");
         } else {
@@ -75,14 +77,24 @@ public class AccountService {
     }
 
     // Transfers amount from one account to another
-    public void transfer(int fromAccountId, int toAccountId) {
+    public void transfer(int fromAccountId, int toAccountId, FileHandler fileHandler) {
+        // Check if the source and destination accounts are the same
+        if (fromAccountId == toAccountId) {
+            System.out.println("Transfer cancelled: Cannot transfer to the same account.");
+            return; // Exit the method
+        }
 
+        // Use FileHandler to ensure both accounts are loaded
+        fileHandler.loadAccountIfNotLoaded(fromAccountId, accountMap);
+        fileHandler.loadAccountIfNotLoaded(toAccountId, accountMap);
+
+        // Now that both accounts are loaded, proceed with the transfer
         Account fromAccount = accountMap.get(fromAccountId);
         Account toAccount = accountMap.get(toAccountId);
 
         // Check if either of the accounts is null (does not exist)
         if (fromAccount == null || toAccount == null) {
-            System.out.println("One or both accounts not found.");
+            System.out.println("Account with this ID not found.");
             return; // Exit the method if accounts are not valid
         }
 
@@ -91,12 +103,12 @@ public class AccountService {
 
         // If the amount is -1, it means invalid input was entered
         if (amount == -1) {
-            return;  // Skip further processing if input was invalid
+            System.out.println("Invalid input detected. Transfer cancelled.");
+            return;  // Skip the rest of the method
         }
 
-        // Handle insufficient funds or invalid transfer amount
         if (amount <= 0) {
-            System.out.println("Transfer amount must be positive.");
+            System.out.println("Invalid input detected. Transfer cancelled.");
         } else if (amount > fromAccount.getBalance()) {
             System.out.println("Insufficient funds for the transfer.");
         } else {
@@ -105,7 +117,6 @@ public class AccountService {
             toAccount.setBalance(toAccount.getBalance() + amount);     // Deposit to target account
             System.out.println("Transferred from Id " + fromAccount.getId() + ", amount: " + amount + " to "
                 + toAccount.getName() + "(Id " + toAccount.getId() + ")");
-
         }
     }
 
