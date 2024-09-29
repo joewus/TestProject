@@ -1,7 +1,11 @@
 public class Account {
-    private final int Id;
-    private final String Name;
+    private int Id;
+    private String Name;
     private int Balance;
+
+    public Account() {
+
+    }
 
     public Account(int Id, String Name, int InitialBalance) {
         this.Id = Id;
