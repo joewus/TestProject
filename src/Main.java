@@ -1,14 +1,11 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.logging.FileHandler;
+
 
 public class Main {
     public static void main(String[] args) {
         AccountService accountService = new AccountService();
-
-        Account account1 = new Account(100, "Luiz", 15);
-        accountService.addAccount(account1);
-        Account account2 = new Account(202, "Chang", 1000);
-        accountService.addAccount(account2);
 
         Scanner scanner = new Scanner(System.in);
         String abortChoice;
@@ -94,5 +91,5 @@ public class Main {
 
         scanner.close();
         accountService.closeScanner();
-    }
+     }
 }

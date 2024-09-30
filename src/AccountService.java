@@ -1,9 +1,10 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class AccountService {
     ExceptionHandler exceptionHandler = new ExceptionHandler();
+    fileHandler filehandler = new fileHandler(); // Instance of fileHandler for file I/O
 
     // Creating an instance of the Scanner class
     private final Scanner scanner = new Scanner(System.in);
@@ -11,9 +12,14 @@ public class AccountService {
     // Map to store accounts with their IDs as keys
     public Map<Integer, Account> accountMap = new HashMap<>();
 
+    // Constructor to load accounts from the file at the start
+    public AccountService() {
+        loadAccounts();
+    }
+
     // Method to add an account to the map
     public void addAccount(Account account) {
-        accountMap.put(account.getId(), account);
+        accountMap.put(account.getId(), account); // Add the account using the correct method
     }
 
     // Shows the balance in the given account
@@ -35,11 +41,7 @@ public class AccountService {
         }
 
         int amount = exceptionHandler.getValidAmount("Enter amount to deposit: ");
-
-        // If amount is -1, it means invalid input was provided, so we skip further processing
-        if (amount == -1) {
-            return;  // Skip the rest of the method
-        }
+        if (amount == -1) return;
 
         if (amount <= 0) {
             System.out.println("Cannot deposit a negative or zero amount.");
@@ -58,11 +60,7 @@ public class AccountService {
         }
 
         int amount = exceptionHandler.getValidAmount("Enter amount to withdraw: ");
-
-        // If amount is -1, it means invalid input was provided, so we skip further processing
-        if (amount == -1) {
-            return;  // Skip the rest of the method
-        }
+        if (amount == -1) return;
 
         if (amount <= 0) {
             System.out.println("Cannot withdraw a negative or zero amount.");
@@ -76,41 +74,44 @@ public class AccountService {
 
     // Transfers amount from one account to another
     public void transfer(int fromAccountId, int toAccountId) {
-
         Account fromAccount = accountMap.get(fromAccountId);
         Account toAccount = accountMap.get(toAccountId);
 
-        // Check if either of the accounts is null (does not exist)
         if (fromAccount == null || toAccount == null) {
             System.out.println("One or both accounts not found.");
-            return; // Exit the method if accounts are not valid
+            return;
         }
 
-        // Get the amount to transfer
         int amount = exceptionHandler.getValidAmount("Enter amount to transfer: ");
+        if (amount == -1) return;
 
-        // If the amount is -1, it means invalid input was entered
-        if (amount == -1) {
-            return;  // Skip further processing if input was invalid
-        }
-
-        // Handle insufficient funds or invalid transfer amount
         if (amount <= 0) {
             System.out.println("Transfer amount must be positive.");
         } else if (amount > fromAccount.getBalance()) {
             System.out.println("Insufficient funds for the transfer.");
         } else {
-            // Perform the transfer
             fromAccount.setBalance(fromAccount.getBalance() - amount); // Withdraw from source account
             toAccount.setBalance(toAccount.getBalance() + amount);     // Deposit to target account
             System.out.println("Transferred from Id " + fromAccount.getId() + ", amount: " + amount + " to "
                 + toAccount.getName() + "(Id " + toAccount.getId() + ")");
-
         }
+    }
+
+    // Method to load accounts from file using fileHandler
+    private void loadAccounts() {
+        List<Account> accounts = filehandler.readAccounts();
+        for (Account account : accounts) {
+            accountMap.put(account.getId(), account);
+        }
+    }
+
+    // Method to save accounts to file using fileHandler
+    public void saveAccounts() {
+        filehandler.writeAccounts(new ArrayList<>(accountMap.values()));
     }
 
     // Closes the scanner to prevent resource leaks
     public void closeScanner() {
-        scanner.close(); // Close the scanner safely
+        scanner.close();
     }
 }
