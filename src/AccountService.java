@@ -1,13 +1,9 @@
-import java.util.Scanner;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AccountService {
     private final FileHandler fileHandler = new FileHandler();
     ExceptionHandler exceptionHandler = new ExceptionHandler();
-
-    // Creating an instance of the Scanner class
-    private final Scanner scanner = new Scanner(System.in);
 
     // Map to store accounts with their IDs as keys
     public Map<Integer, Account> accountMap = new HashMap<>();
@@ -123,10 +119,5 @@ public class AccountService {
             System.out.println("Transferred from ID " + fromAccount.getId() + ", amount: " + amount + " to "
                 + toAccount.getName() + "(ID " + toAccount.getId() + ")");
         }
-    }
-
-    // Closes the scanner to prevent resource leaks
-    public void closeScanner() {
-        scanner.close(); // Close the scanner safely
     }
 }

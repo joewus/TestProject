@@ -98,7 +98,6 @@ public class Main {
         }
 
         scanner.close();
-        accountService.closeScanner();
     }
 
     // Helper method to ask the user if they want to continue or exit
