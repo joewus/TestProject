@@ -1,5 +1,5 @@
-import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class ExceptionHandler {
     private final Scanner scanner = new Scanner(System.in);
