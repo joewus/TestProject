@@ -97,8 +97,6 @@ public class FileHandler {
                     // Attempt to rename the temporary file to the original file name
                     if (!tempFile.renameTo(inputFile)) {
                         System.out.println("Failed to rename temporary file.");
-                    } else {
-                        System.out.println("Account balance updated successfully.");
                     }
                 } else {
                     System.out.println("Failed to delete the original file. File may be in use.");
