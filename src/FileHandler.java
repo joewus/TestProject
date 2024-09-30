@@ -86,8 +86,19 @@ public class FileHandler {
             writer.close();
 
             // Replace the old file with the updated one
-            inputFile.delete();
-            tempFile.renameTo(inputFile);
+            try {
+                // Attempt to delete the old file
+                if (inputFile.delete()) {
+                    // Attempt to rename the temporary file to the original file name
+                    if (!tempFile.renameTo(inputFile)) {
+                        System.out.println("Failed to rename temporary file.");
+                    }
+                } else {
+                    System.out.println("Failed to delete the original file.");
+                }
+            } catch (Exception e) {
+                System.out.println("An error occurred while replacing the file: " + e.getMessage());
+            }
 
         } catch (IOException e) {
             System.out.println("An error occurred while updating the account.");
