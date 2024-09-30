@@ -1,6 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.Map;
+import java.io.File;
 import java.io.IOException;
 
 public class FileHandler {
@@ -45,5 +48,49 @@ public class FileHandler {
 
         // Return null if no account is found with the given userId
         return null;
+    }
+
+    // New method to update an account balance in the file
+    public void updateAccountBalance(int accountId, int newBalance) {
+        File inputFile = new File(FILE_NAME);
+        File tempFile = new File("temp_" + FILE_NAME);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+             BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+
+            String line;
+            boolean accountFound = false;
+
+            // Read each line from the file
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(";");
+                int id = Integer.parseInt(parts[0]);
+
+                // If it's the account we're looking for, update the balance
+                if (id == accountId) {
+                    String name = parts[1];
+                    writer.write(id + ";" + name + ";" + newBalance);
+                    accountFound = true;
+                } else {
+                    // Otherwise, write the line as is
+                    writer.write(line);
+                }
+                writer.newLine();  // Move to the next line
+            }
+
+            if (!accountFound) {
+                System.out.println("Account with ID " + accountId + " not found in the file.");
+            }
+
+            // Close the writer and rename the temporary file
+            writer.close();
+
+            // Replace the old file with the updated one
+            inputFile.delete();
+            tempFile.renameTo(inputFile);
+
+        } catch (IOException e) {
+            System.out.println("An error occurred while updating the account.");
+        }
     }
 }

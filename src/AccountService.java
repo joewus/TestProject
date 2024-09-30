@@ -1,8 +1,9 @@
+import java.util.Scanner;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class AccountService {
+    private final FileHandler fileHandler = new FileHandler();
     ExceptionHandler exceptionHandler = new ExceptionHandler();
 
     // Creating an instance of the Scanner class
@@ -20,7 +21,7 @@ public class AccountService {
     public void balance(int accountId) {
         Account account = accountMap.get(accountId);
         if (account != null) {
-            System.out.println("Balance is: " + account.getBalance());
+            System.out.println("ID " + account.getId() + ", balance is: " + account.getBalance());
         } else {
             System.out.println("Account not found.");
         }
@@ -46,7 +47,8 @@ public class AccountService {
             System.out.println("Invalid input detected. Deposit cancelled.");
         } else {
             account.setBalance(account.getBalance() + amount);
-            System.out.println("Deposited: " + amount);
+            fileHandler.updateAccountBalance(accountId, account.getBalance());
+            System.out.println("Deposited: " + amount + ". Balance is: " + account.getBalance());
         }
     }
 
@@ -72,7 +74,8 @@ public class AccountService {
             System.out.println("Insufficient balance.");
         } else {
             account.setBalance(account.getBalance() - amount);
-            System.out.println("Withdrew: " + amount);
+            fileHandler.updateAccountBalance(accountId, account.getBalance());
+            System.out.println("Withdrew: " + amount + ". Balance is: " + account.getBalance());
         }
     }
 
@@ -115,8 +118,10 @@ public class AccountService {
             // Perform the transfer
             fromAccount.setBalance(fromAccount.getBalance() - amount); // Withdraw from source account
             toAccount.setBalance(toAccount.getBalance() + amount);     // Deposit to target account
-            System.out.println("Transferred from Id " + fromAccount.getId() + ", amount: " + amount + " to "
-                + toAccount.getName() + "(Id " + toAccount.getId() + ")");
+            fileHandler.updateAccountBalance(fromAccountId, fromAccount.getBalance());
+            fileHandler.updateAccountBalance(toAccountId, toAccount.getBalance());
+            System.out.println("Transferred from ID " + fromAccount.getId() + ", amount: " + amount + " to "
+                + toAccount.getName() + "(ID " + toAccount.getId() + ")");
         }
     }
 
