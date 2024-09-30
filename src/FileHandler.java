@@ -55,6 +55,7 @@ public class FileHandler {
         File inputFile = new File(FILE_NAME);
         File tempFile = new File("temp_" + FILE_NAME);
 
+        // BufferedReader and BufferedWriter will automatically close at the end of the try block.
         try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
              BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
 
@@ -82,26 +83,31 @@ public class FileHandler {
                 System.out.println("Account with ID " + accountId + " not found in the file.");
             }
 
-            // Close the writer and rename the temporary file
-            writer.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred while updating the account: " + e.getMessage());
+            return;  // Exit if reading or writing fails
+        }
 
-            // Replace the old file with the updated one
-            try {
-                // Attempt to delete the old file
+        // Now we attempt to replace the original file with the temporary file
+        try {
+            // Ensure that the writer has finished and closed before proceeding
+            if (tempFile.exists() && inputFile.exists()) {
+                // Attempt to delete the original file
                 if (inputFile.delete()) {
                     // Attempt to rename the temporary file to the original file name
                     if (!tempFile.renameTo(inputFile)) {
                         System.out.println("Failed to rename temporary file.");
+                    } else {
+                        System.out.println("Account balance updated successfully.");
                     }
                 } else {
-                    System.out.println("Failed to delete the original file.");
+                    System.out.println("Failed to delete the original file. File may be in use.");
                 }
-            } catch (Exception e) {
-                System.out.println("An error occurred while replacing the file: " + e.getMessage());
+            } else {
+                System.out.println("Temp file or input file doesn't exist.");
             }
-
-        } catch (IOException e) {
-            System.out.println("An error occurred while updating the account.");
+        } catch (Exception e) {
+            System.out.println("An error occurred while replacing the file: " + e.getMessage());
         }
     }
 }
